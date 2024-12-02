@@ -8,7 +8,7 @@ def is_safe(levels) -> bool:
     direction = 1 if levels[0] < levels[1] else -1
     for x in range(1,len(levels)):
         differ = (levels[x] - levels[x-1])
-        if differ > 3  or differ < -3 or differ == 0 or differ * direction < 0:
+        if abs(differ) > 3 or differ == 0 or differ * direction < 0:
             return False
     return True
 def is_safe_tolerance(levels) -> bool:
