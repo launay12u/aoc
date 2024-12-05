@@ -1,24 +1,21 @@
 from collections import Counter
+from typing import List
 
-left, right = [], []
+left: List[int] = []
+right: List[int] = []
+
 with open("data.txt", "r") as file:
     for line in file:
         parts = line.strip().split(" ")
-        l, r = int(parts[0]), int(parts[-1])
-        left.append(l)
-        right.append(r)
+        left.append(int(parts[0]))
+        right.append(int(parts[-1]))
 
 left.sort()
 right.sort()
-res = 0
-for i, num in enumerate(left):
-    res += abs(num - right[i])
+
+res: int = sum(abs(l - r) for l, r in zip(left, right))
 print(res)
 
-count = Counter(right)
-sim = 0
-
-for num in left:
-    if num in count:
-        sim += num * count[num]
+count: Counter = Counter(right)
+sim: int = sum(count[num] * num for num in left)
 print(sim)

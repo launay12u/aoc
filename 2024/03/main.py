@@ -1,24 +1,34 @@
 import re
+from typing import List, Tuple
+
 with open("data.txt", "r") as file:
-    memory = file.read()
+    memory: str = file.read()
 
-total = 0
-mul_regex = r"mul\((\d{1,3}),(\d{1,3})\)"
-matches = re.findall(mul_regex, memory)
-for match in matches:
-    x,y = match
-    total += int(x) * int(y)
-print(total)
+mul_regex: str = r"mul\((\d{1,3}),(\d{1,3})\)"
+control_regex: str = r"(do\(\)|don't\(\))"
 
-control_regex = r"(do\(\)|don't\(\))"
-matches = re.findall(f"{mul_regex}|{control_regex}", memory)
-total = 0
-enable=True
-for match in matches:
-    if match[2] == "do()":
-        enable=True
-    elif match[2] == "don't()":
-        enable=False
-    elif match[2] == "" and enable:
-        total += int(match[0]) * int(match[1])
-print(total)
+
+def compute_mul(matches: List[Tuple[str, str, str]],verify_control: bool = False) -> int:
+    enable: bool = True
+    total: int = 0
+    for match in matches:
+        x, y, control = match
+        if verify_control:
+            if control == "do()":
+                enable = True
+            elif control == "don't()":
+                enable = False
+        if x and y:
+            if enable:
+                total += int(x) * int(y)
+
+    return total
+
+
+matches: List[Tuple[str, str, str]] = re.findall(f"{mul_regex}|{control_regex}", memory)
+
+total_part_1: int = compute_mul(matches)
+total_part_2: int = compute_mul(matches, verify_control=True)
+
+print(total_part_1)
+print(total_part_2)
