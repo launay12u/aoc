@@ -5,7 +5,6 @@ from utils.time_decorator import timer
 
 PATH = Path(__file__).parent / "data.txt"
 
-# Use constants instead of magic numbers
 DIAL_SIZE = 100
 START_POSITION = 50
 
